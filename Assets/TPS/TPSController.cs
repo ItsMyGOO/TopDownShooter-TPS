@@ -5,6 +5,8 @@ public class TPSController : MonoBehaviour
 {
     Transform playerTransform;
     Animator animator;
+    Transform cameraTransform;
+    CharacterController characterController;
 
     public enum PlayerPosture
     {
@@ -38,14 +40,32 @@ public class TPSController : MonoBehaviour
 
     int postureHash, moveSpeedHash, turnSpeedHash;
 
+    Vector3 playerMovement = Vector3.zero;
+
     private void Start()
     {
         playerTransform = transform;
         animator = GetComponent<Animator>();
+        cameraTransform = Camera.main.transform;
+        characterController = GetComponent<CharacterController>();
 
         postureHash = Animator.StringToHash("posture");
         moveSpeedHash = Animator.StringToHash("moveSpeed");
-        turnSpeedHash = Animator.StringToHash(" turnSpeed");
+        turnSpeedHash = Animator.StringToHash("turnSpeed");
+
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    private void Update()
+    {
+        SwitchPlayerState();
+        CalculateInputDirection();
+        SetupAnimator();
+    }
+
+    private void OnAnimatorMove()
+    {
+        characterController.Move(animator.deltaPosition);
     }
 
     #region 玩家输入
@@ -59,11 +79,11 @@ public class TPSController : MonoBehaviour
     }
     public void GetCrouchInput(InputAction.CallbackContext context)
     {
-        isRunning = context.ReadValueAsButton();
+        isCrouch = context.ReadValueAsButton();
     }
     public void GetAimInput(InputAction.CallbackContext context)
     {
-        isRunning = context.ReadValueAsButton();
+        isAiming = context.ReadValueAsButton();
     }
     #endregion
 
@@ -85,5 +105,45 @@ public class TPSController : MonoBehaviour
         }
 
         aimState = isAiming ? AimState.Aim : AimState.Normal;
+    }
+
+    void CalculateInputDirection()
+    {
+        Vector3 camForwardprojection = new Vector3(cameraTransform.forward.x, 0, cameraTransform.forward.z).normalized;
+        playerMovement = camForwardprojection * moveInput.y + cameraTransform.right * moveInput.x;
+        playerMovement = playerTransform.InverseTransformVector(playerMovement);
+    }
+
+    void SetupAnimator()
+    {
+        float moveSpeed = 0;
+        const float DAMPTIME = 0.1f;
+
+        animator.SetFloat(postureHash, (int)playerPosture, DAMPTIME, Time.deltaTime);
+        if (playerPosture == PlayerPosture.Stand)
+        {
+            moveSpeed = locomotionState switch
+            {
+                LocomotionState.Idle => 0,
+                LocomotionState.Walk => playerMovement.magnitude * walkSpeed,
+                LocomotionState.Run => playerMovement.magnitude * runSpeed
+            };
+        }
+        else if (playerPosture == PlayerPosture.Crouch)
+        {
+            moveSpeed = locomotionState switch
+            {
+                LocomotionState.Idle => 0,
+                _ => playerMovement.magnitude * crouchSpeed
+            };
+        }
+        animator.SetFloat(moveSpeedHash, moveSpeed, DAMPTIME, Time.deltaTime);
+
+        if (aimState == AimState.Normal)
+        {
+            float rad = Mathf.Atan2(playerMovement.x, playerMovement.z);
+            animator.SetFloat(turnSpeedHash, rad, DAMPTIME, Time.deltaTime);
+            playerTransform.Rotate(0, rad * 200 * Time.deltaTime, 0);
+        }
     }
 }

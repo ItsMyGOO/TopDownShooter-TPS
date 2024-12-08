@@ -47,12 +47,12 @@ AnimatorController:
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: posture
-    m_Type: 3
-    m_DefaultFloat: 0
+    m_Type: 1
+    m_DefaultFloat: 1
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: walkSpeed
+  - m_Name: moveSpeed
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -96,45 +96,45 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: 7400012, guid: d89ea37480b6d75458aa38843e9688dc, type: 3}
     m_Threshold: 0.16666667
-    m_Position: {x: -0.764381, y: 0}
-    m_TimeScale: 1
+    m_Position: {x: -1.528762, y: 0}
+    m_TimeScale: 2
     m_CycleOffset: 0
     m_DirectBlendParameter: walkSpeed
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 7400010, guid: d89ea37480b6d75458aa38843e9688dc, type: 3}
     m_Threshold: 0.33333334
-    m_Position: {x: 0.7643808, y: 0}
-    m_TimeScale: 1
+    m_Position: {x: 1.5287616, y: 0}
+    m_TimeScale: 2
     m_CycleOffset: 0
     m_DirectBlendParameter: walkSpeed
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 7400004, guid: d89ea37480b6d75458aa38843e9688dc, type: 3}
     m_Threshold: 0.5
-    m_Position: {x: 0, y: 0.56037045}
-    m_TimeScale: 1
+    m_Position: {x: 0, y: 1.1207408}
+    m_TimeScale: 2
     m_CycleOffset: 0
     m_DirectBlendParameter: walkSpeed
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 7400008, guid: d89ea37480b6d75458aa38843e9688dc, type: 3}
     m_Threshold: 0.6666667
-    m_Position: {x: -0.38163406, y: 0.5603704}
-    m_TimeScale: 1
+    m_Position: {x: -0.7632682, y: 1.1207408}
+    m_TimeScale: 2
     m_CycleOffset: 0
     m_DirectBlendParameter: walkSpeed
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 7400014, guid: d89ea37480b6d75458aa38843e9688dc, type: 3}
     m_Threshold: 0.8333333
-    m_Position: {x: 0.38163382, y: 0.5603704}
-    m_TimeScale: 1
+    m_Position: {x: 0.7632676, y: 1.1207408}
+    m_TimeScale: 2
     m_CycleOffset: 0
     m_DirectBlendParameter: walkSpeed
     m_Mirror: 0
   m_BlendParameter: turnSpeed
-  m_BlendParameterY: walkSpeed
+  m_BlendParameterY: moveSpeed
   m_MinThreshold: 0
   m_MaxThreshold: 0.8333333
   m_UseAutomaticThresholds: 0
@@ -237,7 +237,7 @@ BlendTree:
     m_DirectBlendParameter: posture
     m_Mirror: 0
   m_BlendParameter: turnSpeed
-  m_BlendParameterY: walkSpeed
+  m_BlendParameterY: moveSpeed
   m_MinThreshold: 0
   m_MaxThreshold: 1
   m_UseAutomaticThresholds: 0

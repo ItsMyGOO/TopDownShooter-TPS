@@ -2936,7 +2936,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boneKeyword: hair
   dynamicRatio: 1
-  stiffnessForce: 0.5
+  stiffnessForce: 2
   stiffnessCurve:
     serializedVersion: 2
     m_Curve:
@@ -3106,7 +3106,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boneKeyword: Dress
   dynamicRatio: 1
-  stiffnessForce: 0.3
+  stiffnessForce: 1
   stiffnessCurve:
     serializedVersion: 2
     m_Curve:

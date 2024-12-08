@@ -96,7 +96,7 @@ namespace UnityChan
             springBones = list.ToArray();
         }
 
-        public void FindBones(Transform node, List<SpringBone> bones)
+        private void FindBones(Transform node, List<SpringBone> bones)
         {
             if (node.childCount == 0)
                 return;
@@ -111,7 +111,7 @@ namespace UnityChan
             }
         }
 
-        private void BindBones(Transform node, List<SpringBone> bones)
+        private static void BindBones(Transform node, List<SpringBone> bones)
         {
             if (node.childCount == 0)
                 return;
