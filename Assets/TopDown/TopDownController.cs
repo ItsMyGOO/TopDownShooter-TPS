@@ -2,8 +2,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class TopDownController : MonoBehaviour {
-    static readonly int _verticalSpeedHash = Animator.StringToHash("Vertical Speed");
+    static readonly int _verticalSpeed = Animator.StringToHash("Vertical Speed");
     static readonly int _rifle = Animator.StringToHash("Rifle");
+    static readonly int _isAiming = Animator.StringToHash("isAiming");
 
     Animator animator;
     Transform playerTransform;
@@ -12,7 +13,7 @@ public class TopDownController : MonoBehaviour {
     bool isRunning;
 
     Vector3 playerMovement;
-    public float rotateSpeed = 1000;
+    // public float rotateSpeed = 1000;
 
     float currentSpeed;
     float targetSpeed;
@@ -21,6 +22,7 @@ public class TopDownController : MonoBehaviour {
     public float speedLerp = 0.5f;
 
     bool armedRifle;
+    bool isAiming;
 
     void Start() {
         playerTransform = transform;
@@ -44,8 +46,19 @@ public class TopDownController : MonoBehaviour {
     }
 
     public void GetArmedRifleInput(InputAction.CallbackContext context) {
-        if (context.performed)
+        if (context.performed) {
             armedRifle = !armedRifle;
+            animator.SetBool(_rifle, armedRifle);
+        }
+    }
+
+    public void GetPlayerAimInput(InputAction.CallbackContext context) {
+        // isAiming = context.ReadValueAsButton();
+        if (context.performed) {
+            isAiming = !isAiming;
+        }
+
+        animator.SetBool(_isAiming, isAiming);
     }
 
     #endregion
@@ -58,7 +71,8 @@ public class TopDownController : MonoBehaviour {
         playerMovement.z = playerInput.y;
 
         Quaternion rotation = Quaternion.LookRotation(playerMovement, Vector3.up);
-        playerTransform.rotation = Quaternion.RotateTowards(playerTransform.rotation, rotation, rotateSpeed * Time.deltaTime);
+        // playerTransform.rotation = Quaternion.RotateTowards(playerTransform.rotation, rotation, rotateSpeed * Time.deltaTime);
+        playerTransform.rotation = rotation;
     }
 
     void MovePlayer() {
@@ -68,7 +82,6 @@ public class TopDownController : MonoBehaviour {
     }
 
     void SetupAnimator() {
-        animator.SetFloat(_verticalSpeedHash, currentSpeed);
-        animator.SetBool(_rifle, armedRifle);
+        animator.SetFloat(_verticalSpeed, currentSpeed);
     }
 }
