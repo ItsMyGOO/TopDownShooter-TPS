@@ -1,10 +1,13 @@
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
 
 public class TopDownController : MonoBehaviour {
     static readonly int _verticalSpeed = Animator.StringToHash("Vertical Speed");
     static readonly int _rifle = Animator.StringToHash("Rifle");
     static readonly int _isAiming = Animator.StringToHash("isAiming");
+    static readonly int _rightHandWeight = Animator.StringToHash("Right Hand Weight");
+    static readonly int _leftHandWeight = Animator.StringToHash("Left Hand Weight");
 
     Animator animator;
     Transform playerTransform;
@@ -24,6 +27,12 @@ public class TopDownController : MonoBehaviour {
     bool armedRifle;
     bool isAiming;
 
+    public GameObject rifleInHand;
+    public GameObject rifleOnBack;
+
+    public TwoBoneIKConstraint rightHandConstraint;
+    public TwoBoneIKConstraint leftHandConstraint;
+
     void Start() {
         playerTransform = transform;
         animator = GetComponent<Animator>();
@@ -33,6 +42,7 @@ public class TopDownController : MonoBehaviour {
         RotatePlayer();
         MovePlayer();
         SetupAnimator();
+        SetTwoHandsWeight();
     }
 
     #region MyRegion 玩家输入
@@ -83,5 +93,16 @@ public class TopDownController : MonoBehaviour {
 
     void SetupAnimator() {
         animator.SetFloat(_verticalSpeed, currentSpeed);
+    }
+
+    public void PutGrabRifle(int param) {
+        bool isGrab = param == 1;
+        rifleInHand.SetActive(isGrab);
+        rifleOnBack.SetActive(!isGrab);
+    }
+
+    void SetTwoHandsWeight() {
+        rightHandConstraint.weight = animator.GetFloat(_rightHandWeight);
+        leftHandConstraint.weight = animator.GetFloat(_leftHandWeight);
     }
 }
