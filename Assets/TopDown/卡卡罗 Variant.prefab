@@ -128,7 +128,7 @@ MonoBehaviour:
     m_Root: {fileID: 282593093537990842}
     m_Mid: {fileID: 6467181341084634204}
     m_Tip: {fileID: 7115315448671161607}
-    m_Target: {fileID: 0}
+    m_Target: {fileID: 3455256874998310221}
     m_Hint: {fileID: 0}
     m_TargetPositionWeight: 1
     m_TargetRotationWeight: 1
@@ -1501,17 +1501,17 @@ PrefabInstance:
     - target: {fileID: 5778476809822179265, guid: ef9153d3756843846b498bf7450dc963,
         type: 3}
       propertyPath: m_UpdateMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5778476809822179265, guid: ef9153d3756843846b498bf7450dc963,
-        type: 3}
-      propertyPath: m_CullingMode
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5778476809822179265, guid: ef9153d3756843846b498bf7450dc963,
         type: 3}
-      propertyPath: m_AnimatePhysics
+      propertyPath: m_CullingMode
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5778476809822179265, guid: ef9153d3756843846b498bf7450dc963,
+        type: 3}
+      propertyPath: m_AnimatePhysics
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5833589188061901505, guid: ef9153d3756843846b498bf7450dc963,
         type: 3}
@@ -2240,14 +2240,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 980300871579799297, guid: ef9153d3756843846b498bf7450dc963,
         type: 3}
-      insertIndex: 2
-      addedObject: {fileID: 7887340211807650266}
-    - targetCorrespondingSourceObject: {fileID: 980300871579799297, guid: ef9153d3756843846b498bf7450dc963,
-        type: 3}
-      insertIndex: 3
-      addedObject: {fileID: 7669443515866536845}
-    - targetCorrespondingSourceObject: {fileID: 980300871579799297, guid: ef9153d3756843846b498bf7450dc963,
-        type: 3}
       insertIndex: -1
       addedObject: {fileID: 5398230447737237219}
     - targetCorrespondingSourceObject: {fileID: 980300871579799297, guid: ef9153d3756843846b498bf7450dc963,
@@ -2262,6 +2254,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 106028730170567830}
+    - targetCorrespondingSourceObject: {fileID: 980300871579799297, guid: ef9153d3756843846b498bf7450dc963,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3441025674514788581}
   m_SourcePrefab: {fileID: 100100000, guid: ef9153d3756843846b498bf7450dc963, type: 3}
 --- !u!4 &9162164338980068 stripped
 Transform:
@@ -3583,56 +3579,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 3774254689339607483}
   m_PrefabAsset: {fileID: 0}
---- !u!54 &7887340211807650266
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4177760276784187066}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 80
-  m_CollisionDetection: 0
---- !u!136 &7669443515866536845
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4177760276784187066}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.2
-  m_Height: 1.9
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.95, z: 0}
 --- !u!114 &5398230447737237219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4284,6 +4230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 561463e897332ac46859ca714e758845, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotateSpeed: 1000
   walkSpeed: 1.5
   runSpeed: 3.5
   speedLerp: 0.5
@@ -4291,6 +4238,31 @@ MonoBehaviour:
   rifleOnBack: {fileID: 4759750570775710035}
   rightHandConstraint: {fileID: 1086251915691859249}
   leftHandConstraint: {fileID: 8548661539529354236}
+--- !u!143 &3441025674514788581
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4177760276784187066}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 1.9
+  m_Radius: 0.2
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.02
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0.95, z: 0}
 --- !u!4 &4193381911754555977 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1031669583739440114, guid: ef9153d3756843846b498bf7450dc963,

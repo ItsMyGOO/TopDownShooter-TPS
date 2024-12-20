@@ -1,34 +1,34 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class TPSController : MonoBehaviour
-{
+public class TPSController : MonoBehaviour {
     Transform playerTransform;
     Animator animator;
     Transform cameraTransform;
     CharacterController characterController;
 
-    public enum PlayerPosture
-    {
+    public enum PlayerPosture {
         Crouch = 0,
         Stand,
         MidAir
     }
+
     public PlayerPosture playerPosture;
 
-    public enum LocomotionState
-    {
+    public enum LocomotionState {
         Idle,
         Walk,
         Run
     }
+
     public LocomotionState locomotionState = LocomotionState.Idle;
 
-    public enum AimState
-    {
+    public enum AimState {
         Normal,
         Aim
     }
+
     public AimState aimState = AimState.Normal;
 
     public float crouchSpeed = 1.5f;
@@ -42,8 +42,7 @@ public class TPSController : MonoBehaviour
 
     Vector3 playerMovement = Vector3.zero;
 
-    private void Start()
-    {
+    private void Start() {
         playerTransform = transform;
         animator = GetComponent<Animator>();
         cameraTransform = Camera.main.transform;
@@ -56,91 +55,81 @@ public class TPSController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    private void Update()
-    {
+    private void Update() {
         SwitchPlayerState();
         CalculateInputDirection();
         SetupAnimator();
     }
 
-    private void OnAnimatorMove()
-    {
+    private void OnAnimatorMove() {
         characterController.Move(animator.deltaPosition);
     }
 
     #region 玩家输入
-    public void GetMoveInput(InputAction.CallbackContext context)
-    {
+
+    public void GetMoveInput(InputAction.CallbackContext context) {
         moveInput = context.ReadValue<Vector2>();
     }
-    public void GetRunInput(InputAction.CallbackContext context)
-    {
+
+    public void GetRunInput(InputAction.CallbackContext context) {
         isRunning = context.ReadValueAsButton();
     }
-    public void GetCrouchInput(InputAction.CallbackContext context)
-    {
+
+    public void GetCrouchInput(InputAction.CallbackContext context) {
         isCrouch = context.ReadValueAsButton();
     }
-    public void GetAimInput(InputAction.CallbackContext context)
-    {
+
+    public void GetAimInput(InputAction.CallbackContext context) {
         isAiming = context.ReadValueAsButton();
     }
+
     #endregion
 
-    void SwitchPlayerState()
-    {
+    void SwitchPlayerState() {
         playerPosture = isCrouch ? PlayerPosture.Crouch : PlayerPosture.Stand;
 
-        if (moveInput.magnitude == 0)
-        {
+        if (moveInput.magnitude == 0) {
             locomotionState = LocomotionState.Idle;
         }
-        else if (!isRunning)
-        {
+        else if (!isRunning) {
             locomotionState = LocomotionState.Walk;
         }
-        else
-        {
+        else {
             locomotionState = LocomotionState.Run;
         }
 
         aimState = isAiming ? AimState.Aim : AimState.Normal;
     }
 
-    void CalculateInputDirection()
-    {
+    void CalculateInputDirection() {
         Vector3 camForwardprojection = new Vector3(cameraTransform.forward.x, 0, cameraTransform.forward.z).normalized;
         playerMovement = camForwardprojection * moveInput.y + cameraTransform.right * moveInput.x;
         playerMovement = playerTransform.InverseTransformVector(playerMovement);
     }
 
-    void SetupAnimator()
-    {
+    void SetupAnimator() {
         float moveSpeed = 0;
         const float DAMPTIME = 0.1f;
 
         animator.SetFloat(postureHash, (int)playerPosture, DAMPTIME, Time.deltaTime);
-        if (playerPosture == PlayerPosture.Stand)
-        {
-            moveSpeed = locomotionState switch
-            {
+        if (playerPosture == PlayerPosture.Stand) {
+            moveSpeed = locomotionState switch {
                 LocomotionState.Idle => 0,
                 LocomotionState.Walk => playerMovement.magnitude * walkSpeed,
-                LocomotionState.Run => playerMovement.magnitude * runSpeed
+                LocomotionState.Run => playerMovement.magnitude * runSpeed,
+                _ => throw new ArgumentOutOfRangeException()
             };
         }
-        else if (playerPosture == PlayerPosture.Crouch)
-        {
-            moveSpeed = locomotionState switch
-            {
+        else if (playerPosture == PlayerPosture.Crouch) {
+            moveSpeed = locomotionState switch {
                 LocomotionState.Idle => 0,
                 _ => playerMovement.magnitude * crouchSpeed
             };
         }
+
         animator.SetFloat(moveSpeedHash, moveSpeed, DAMPTIME, Time.deltaTime);
 
-        if (aimState == AimState.Normal)
-        {
+        if (aimState == AimState.Normal) {
             float rad = Mathf.Atan2(playerMovement.x, playerMovement.z);
             animator.SetFloat(turnSpeedHash, rad, DAMPTIME, Time.deltaTime);
             playerTransform.Rotate(0, rad * 200 * Time.deltaTime, 0);

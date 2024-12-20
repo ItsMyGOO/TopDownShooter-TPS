@@ -11,12 +11,13 @@ public class TopDownController : MonoBehaviour {
 
     Animator animator;
     Transform playerTransform;
+    CharacterController characterController;
 
     Vector2 playerInput;
     bool isRunning;
 
     Vector3 playerMovement;
-    // public float rotateSpeed = 1000;
+    public float rotateSpeed = 1000;
 
     float currentSpeed;
     float targetSpeed;
@@ -36,6 +37,7 @@ public class TopDownController : MonoBehaviour {
     void Start() {
         playerTransform = transform;
         animator = GetComponent<Animator>();
+        characterController = GetComponent<CharacterController>();
     }
 
     void Update() {
@@ -43,6 +45,10 @@ public class TopDownController : MonoBehaviour {
         MovePlayer();
         SetupAnimator();
         SetTwoHandsWeight();
+    }
+
+    void OnAnimatorMove() {
+        characterController.SimpleMove(animator.velocity);
     }
 
     #region MyRegion 玩家输入
@@ -63,11 +69,7 @@ public class TopDownController : MonoBehaviour {
     }
 
     public void GetPlayerAimInput(InputAction.CallbackContext context) {
-        // isAiming = context.ReadValueAsButton();
-        if (context.performed) {
-            isAiming = !isAiming;
-        }
-
+        isAiming = context.ReadValueAsButton();
         animator.SetBool(_isAiming, isAiming);
     }
 
@@ -81,8 +83,7 @@ public class TopDownController : MonoBehaviour {
         playerMovement.z = playerInput.y;
 
         Quaternion rotation = Quaternion.LookRotation(playerMovement, Vector3.up);
-        // playerTransform.rotation = Quaternion.RotateTowards(playerTransform.rotation, rotation, rotateSpeed * Time.deltaTime);
-        playerTransform.rotation = rotation;
+        playerTransform.rotation = Quaternion.RotateTowards(playerTransform.rotation, rotation, rotateSpeed * Time.deltaTime);
     }
 
     void MovePlayer() {
